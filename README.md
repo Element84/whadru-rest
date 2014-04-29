@@ -8,6 +8,7 @@ Requirements
 
 * Sinatra (http://www.sinatrarb.com)
 * Sinatra::JSON (http://www.sinatrarb.com/contrib/json.html)
+* Nokogiri (http://nokogiri.org)
 
 Available Endpoints
 -------------------
@@ -29,3 +30,11 @@ Available Endpoints
 * /sites/[site\_key]/visitors - returns a list of all visitors to the site identified by *site\_key* with:
   * for each visit, the IP address of the visitor (IPv4 format, e.g. 128.218.54.23)
   * for that IP address, the number of visits to the site (regardless of URL)
+  
+* /sites/[site\_key]/urls - returns an array of URLs off the site identified by *site\_key* that are being tracked. Each URL entry includes:
+  * the URL of the link element (e.g. http://www.element84.com/portfolio)
+  * the name of the link in the <a> element (e.g. "Portfolio")
+    
+* /sites/[site\_key]/visits - returns an array of URLs and visit counts for the site identified by *site\_key*. Each entry includes:
+  * the URL to which the visits occurred (e.g. http://www.element84.com/portfolio)
+  * the number of visits to that URL

@@ -1,5 +1,7 @@
 require 'sinatra'
 require 'sinatra/json'
+require 'nokogiri'
+require 'open-uri'
 
 set :json_content_type, :js
 
@@ -66,4 +68,25 @@ get '/site/:site_key/visitors' do |site_key|
   numIps = 25 + rand(500) + rand(500)
   visitors = numIps.times.map { [Array.new(4){rand(256)}.join('.'), 1 + rand(100)] }
   "#{visitors}"
+end
+
+get '/site/:site_key/urls' do |site_key|
+  "#{links sites[site_key][:url]}"
+end
+
+get '/site/:site_key/visits' do |site_key|
+  site_links = links sites[site_key][:url]
+  "#{ site_links.keys.map { |url| [ "#{url}", rand(100) ]} }"
+end
+
+def links(url)
+  doc = Nokogiri::HTML(open("#{url}"))
+  Hash[
+    *doc.search('a').map { |a| 
+        [
+          a['href'],
+          a.content
+        ]
+      }.flatten
+    ]
 end
